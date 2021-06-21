@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {baseurl} from "../Config";
 
-export const preSubmit = (user, controllerName) => {
-    return axios.post(baseurl+`User/${controllerName}`, user)
+export const preSubmit = (values, controllerName) => {
+    return axios.post(baseurl+`User/${controllerName}`, values)
 }

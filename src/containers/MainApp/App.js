@@ -1,15 +1,13 @@
 import React from 'react';
+import { preSubmit } from '../../Api'
 //import ReactDOM from 'react-dom';
 import {
   Form,
   Select,
   InputNumber,
-  Switch,
   Radio,
   Slider,
   Button,
-  Row,
-  Col,
 } from 'antd';
 import './App.scss';
 
@@ -37,31 +35,32 @@ function App() {
   const onFinish = (values) => {
 
     console.log(values);
-    // RegisterUser(values.user, "UserRegister")
-    //   .then((res) => {
-    //     if (res.status === 208) {
-    //       alert(res.data)
-    //     } else if (res.status === 200) {
-    //       alert(res.data)
-    //       this.props.history.replace({
-    //         pathname: 'login'
-    //       })
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+      preSubmit(values)
+        .then((res) => {
+          if (res.status === 208) {
+            console.log(res.data)
+          } else if (res.status === 200) {
+            console.log(res.data)
+            // this.props.history.replace({
+            //   pathname: 'login'
+            // })
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
   };
 
   const listItem = [];
   qList.map((item) => {
+    let formItemBegin = <Form.Item label={item.id}>
+      <span className="ant-form-text">{item.text}</span>
+    </Form.Item>
+    listItem.push(formItemBegin);
     let formItem = <Form.Item
       key={'que' + item.id}
-      label={item.id}
       name={'que' + item.id}
     >
-      <span className="ant-form-text">{item.text}</span>
-      <br></br>
       {/* <Form.item > */}
       <Slider
         marks={{
@@ -82,6 +81,7 @@ function App() {
       {/* </Form.item> */}
     </Form.Item>;
     listItem.push(formItem);
+    return null;
   })
 
 
@@ -98,6 +98,16 @@ function App() {
             name="validate_other"
             {...formItemLayout}
             onFinish={onFinish}
+            initialValues={{
+              Q2: 4,
+              que1: 4,
+              que2: 4,
+              que3: 4,
+              que4: 4,
+              que5: 4,
+              que6: 4,
+              que7: 4,
+            }}
           >
             <Form.Item
               name="gender"
@@ -160,10 +170,9 @@ function App() {
 
             <Form.Item
               label="Weight(kg)"
-
             >
               <Form.Item name="weight">
-                <InputNumber defaultValue="0" min={1} max={200} suffix="RMB"/>
+                <InputNumber defaultValue="0" min={1} max={200} suffix="RMB" />
                 {/* <span className="ant-form-text"> kg</span> */}
               </Form.Item>
             </Form.Item>
@@ -177,20 +186,20 @@ function App() {
             </Form.Item>
 
             <Form.Item label="Q1">
-                <span className="ant-form-text">How frequently have you practiced in a fire drill?</span>
-              </Form.Item>
+              <span className="ant-form-text">How frequently have you practiced in a fire drill?</span>
+            </Form.Item>
             <Form.Item
               name="Q1"
-              label="Frequency"
+              //label="Frequency"
               //hasFeedback
               rules={[
                 {
                   required: true,
-                  message: 'Please select Ethnic group!',
+                  message: 'Please select !',
                 },
               ]}
             >
-              <Select placeholder="Please select Ethnic group" style={{ width: 120 }}>
+              <Select placeholder="Please select " style={{ width: 200 }}>
                 <Option value="Never">Never</Option>
                 <Option value="Once a year">Once a year</Option>
                 <Option value="Twice a year">Twice a year</Option>
@@ -200,15 +209,15 @@ function App() {
             </Form.Item>
 
             <Form.Item label="Q2">
-            <span className="ant-form-text">How would you rate your preparedness/awareness of the correct actions required in a fire?
+              <span className="ant-form-text">How would you rate your preparedness/awareness of the correct actions required in a fire?
                 (-3= very unprepared and +3= Very prepared)
                 7-point Likert Scale</span>
             </Form.Item>
-            <Form.Item 
-            label=""
-            name="Q2"
+            <Form.Item
+              key={"Q2"}
+              label=""
+              name="Q2"
             >
-              
               <Slider
                 marks={{
                   1: '-3',
@@ -224,11 +233,12 @@ function App() {
                 min={1}
                 tipFormatter={false}
                 defaultValue={4}
+                value='4'
               />
             </Form.Item>
-            
+
             <Form.Item label="Q3:">
-            <span className="ant-form-text">How often do you play video games?</span>
+              <span className="ant-form-text">How often do you play video games?</span>
             </Form.Item>
             <Form.Item
               name="Q3"
@@ -249,9 +259,9 @@ function App() {
                 <Option value="Everyday">Everyday</Option>
               </Select>
             </Form.Item>
-            
+
             <Form.Item label="Q4:">
-            <span className="ant-form-text">Have you ever used Virtual Reality?</span>
+              <span className="ant-form-text">Have you ever used Virtual Reality?</span>
             </Form.Item>
             <Form.Item
               name="usedVirtualReality"
@@ -276,6 +286,9 @@ function App() {
                 strongly disagree and +3= strongly agree).</span>
             </Form.Item>
             {listItem}
+            {
+
+            }
             <div className="MainBodyBottom">
               <Button type="primary" htmlType="submit" block>Submit</Button>
             </div>
@@ -286,8 +299,6 @@ function App() {
         <br></br>
       </div>
     </div>
-
-
   )
 }
 
