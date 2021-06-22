@@ -58,8 +58,8 @@ function App() {
     </Form.Item>
     listItem.push(formItemBegin);
     let formItem = <Form.Item
-      key={'que' + item.id}
-      name={'que' + item.id}
+      key={'Que' + item.id}
+      name={'Que' + item.id}
     >
       {/* <Form.item > */}
       <Slider
@@ -100,17 +100,17 @@ function App() {
             onFinish={onFinish}
             initialValues={{
               Q2: 4,
-              que1: 4,
-              que2: 4,
-              que3: 4,
-              que4: 4,
-              que5: 4,
-              que6: 4,
-              que7: 4,
+              Que1: 4,
+              Que2: 4,
+              Que3: 4,
+              Que4: 4,
+              Que5: 4,
+              Que6: 4,
+              Que7: 4,
             }}
           >
             <Form.Item
-              name="gender"
+              name="Gender"
               label="Gender"
               //hasFeedback
               rules={[
@@ -121,8 +121,8 @@ function App() {
               ]}
             >
               <Radio.Group>
-                <Radio value="male">Male</Radio>
-                <Radio value="female">Female</Radio>
+                <Radio value="Male">Male</Radio>
+                <Radio value="Female">Female</Radio>
                 <Radio value="Other">Other</Radio>
                 <Radio value="Prefer not to say">Prefer not to say</Radio>
               </Radio.Group>
@@ -132,7 +132,7 @@ function App() {
             // name="age"
             >
               <Form.Item
-                name="age"
+                name="Age"
                 rules={[
                   {
                     required: true,
@@ -171,7 +171,7 @@ function App() {
             <Form.Item
               label="Weight(kg)"
             >
-              <Form.Item name="weight">
+              <Form.Item name="Weight">
                 <InputNumber defaultValue="0" min={1} max={200} suffix="RMB" />
                 {/* <span className="ant-form-text"> kg</span> */}
               </Form.Item>
@@ -179,7 +179,7 @@ function App() {
             <Form.Item
               label="Height(cm)"
             >
-              <Form.Item name="height">
+              <Form.Item name="Height">
                 <InputNumber defaultValue="0" min={1} max={300} />
                 {/* <span className="ant-form-text"> cm</span> */}
               </Form.Item>
@@ -264,7 +264,7 @@ function App() {
               <span className="ant-form-text">Have you ever used Virtual Reality?</span>
             </Form.Item>
             <Form.Item
-              name="usedVirtualReality"
+              name="Q4"
               //hasFeedback
               rules={[
                 {

@@ -1,0 +1,42 @@
+@import "~antd/dist/antd.css";
+
+.Outline {
+    margin: 0 auto;
+    //background-color: rgb(40, 136, 53);
+    width: 1200px;
+    .BodyTop {
+        margin: 0 auto;
+        //background-color: rgb(21, 105, 214);
+        text-align: center;
+        height: 100px;
+        width: 900px;
+        .bodyText{
+            padding-top: 30px;
+            //margin: auto;
+        }
+    }
+    .MainBody {
+        margin: 0 auto;
+        //background-color: aqua;
+        width: 900px;
+        border: 2px solid darkslategray;
+        border-radius: 30px;
+        .MainBodyMiddle {
+            margin-left: 200px;
+            //background-color: rgb(130, 170, 170);
+            padding-top: 20PX;
+            width: 800px;
+        }
+    }
+    .MainBodyBottom {
+        //margin: 0 auto;
+        padding-top: 20px;
+        //margin-left: 200px;
+        //background-color: rgb(11, 228, 156);
+        height: 100px;
+        width: 500px;
+    }
+}
+.ant-form-text{
+    font-weight:bold ;
+}
