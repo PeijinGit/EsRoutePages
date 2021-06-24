@@ -1,6 +1,6 @@
 import React from 'react';
 import { postSubmit } from '../../Api'
-//import ReactDOM from 'react-dom';
+import {useHistory} from 'react-router-dom';
 import {
   Form,
   Select,
@@ -11,7 +11,8 @@ import {
 import './AfterPost.scss';
 
 function AfterPost() {
-  const { Option } = Select;
+  //const { Option } = Select;
+  const history = useHistory();
   const formItemLayout = {
     labelCol: {
       span: 0,
@@ -85,22 +86,21 @@ function AfterPost() {
   ]
 
   const onFinish = (values) => {
-
-    console.log(values);
-    // postSubmit(values)
-    //     .then((res) => {
-    //       if (res.status === 208) {
-    //         console.log(res.data)
-    //       } else if (res.status === 200) {
-    //         console.log(res.data)
-    //         // this.props.history.replace({
-    //         //   pathname: 'login'
-    //         // })
-    //       }
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     });
+    //console.log(values);
+    postSubmit(values)
+        .then((res) => {
+          if (res.status === 235) {
+            console.log(res.data)
+          } else if (res.status === -100) {
+            console.log(res.data)
+            // this.props.history.replace({
+            //   pathname: 'login'
+            // })
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
   };
 
   const listItem = [];
@@ -178,3 +178,5 @@ function AfterPost() {
 }
 
 export default AfterPost;
+
+

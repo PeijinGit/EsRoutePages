@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { preSubmit } from '../../Api'
+import { useParams, useHistory, useLocation } from "react-router-dom";
 //import ReactDOM from 'react-dom';
 import {
   Form,
@@ -12,6 +13,20 @@ import {
 import './App.scss';
 
 function App() {
+  const history = useHistory();
+  let acquireId = useLocation().search.split('=')[1];
+  //let { userID } = useParams();
+  let userID = "";
+  useEffect(() => {
+    if (typeof (acquireId) == 'string') {
+      userID = acquireId
+    }
+    else {
+      console.log("No user ID")
+      history.push("/PreComplete");
+    }
+  }, [])
+
   const { Option } = Select;
   const formItemLayout = {
     labelCol: {
@@ -34,13 +49,19 @@ function App() {
 
   const onFinish = (values) => {
 
-    console.log(values);
-      preSubmit(values)
+    if (userID != "") {
+      let sendValue = {
+        "userId": userID,
+        "receivedPreSurvey": values
+      }
+      //console.log(sendValue);
+      preSubmit(sendValue)
         .then((res) => {
-          if (res.status === 208) {
-            console.log(res.data)
-          } else if (res.status === 200) {
-            console.log(res.data)
+          var redData = res.data;
+          if (redData.status === 235) {
+            console.log(redData)
+          } else if (res.status === -100) {
+            console.log(redData)
             // this.props.history.replace({
             //   pathname: 'login'
             // })
@@ -49,6 +70,7 @@ function App() {
         .catch(function (error) {
           console.log(error);
         });
+    }
   };
 
   const listItem = [];
@@ -190,8 +212,6 @@ function App() {
             </Form.Item>
             <Form.Item
               name="Q1"
-              //label="Frequency"
-              //hasFeedback
               rules={[
                 {
                   required: true,
