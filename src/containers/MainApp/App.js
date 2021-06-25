@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { preSubmit } from '../../Api'
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 //import ReactDOM from 'react-dom';
 import {
   Form,
@@ -9,21 +9,26 @@ import {
   Radio,
   Slider,
   Button,
+  message,
+  Spin
 } from 'antd';
 import './App.scss';
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 function App() {
   const history = useHistory();
-  let acquireId = useLocation().search.split('=')[1];
-  //let { userID } = useParams();
   let userID = "";
+  let query = useQuery().get("userID");
+  const [loading, setLoding] = useState(false)
   useEffect(() => {
-    if (typeof (acquireId) == 'string') {
-      userID = acquireId
+    if (query !== null) {
+      userID = query
     }
     else {
       console.log("No user ID")
-      history.push("/PreComplete");
+      history.replace("/ErrorPage");
     }
   }, [])
 
@@ -48,23 +53,21 @@ function App() {
   ]
 
   const onFinish = (values) => {
+    setLoding(true);
 
-    if (userID != "") {
+    if (userID !== "") {
       let sendValue = {
         "userId": userID,
         "receivedPreSurvey": values
       }
-      //console.log(sendValue);
       preSubmit(sendValue)
         .then((res) => {
           var redData = res.data;
           if (redData.status === 235) {
-            console.log(redData)
+            history.replace("/PreComplete");
           } else if (res.status === -100) {
+            message.error('Submit failed, please try again later');
             console.log(redData)
-            // this.props.history.replace({
-            //   pathname: 'login'
-            // })
           }
         })
         .catch(function (error) {
@@ -83,7 +86,6 @@ function App() {
       key={'Que' + item.id}
       name={'Que' + item.id}
     >
-      {/* <Form.item > */}
       <Slider
         marks={{
           1: '-3',
@@ -100,7 +102,6 @@ function App() {
         tipFormatter={false}
         defaultValue={4}
       />
-      {/* </Form.item> */}
     </Form.Item>;
     listItem.push(formItem);
     return null;
@@ -109,215 +110,206 @@ function App() {
 
   return (
     <div className="Outline">
-      <div className="BodyTop">
-        <div className="bodyText">
-          <h1>Pre-experiment Survey</h1>
+      <Spin spinning={loading}>
+        <div className="BodyTop">
+          <div className="bodyText">
+            <h1>Pre-experiment Survey</h1>
+          </div>
         </div>
-      </div>
-      <div className="MainBody">
-        <div className="MainBodyMiddle">
-          <Form
-            name="validate_other"
-            {...formItemLayout}
-            onFinish={onFinish}
-            initialValues={{
-              Q2: 4,
-              Que1: 4,
-              Que2: 4,
-              Que3: 4,
-              Que4: 4,
-              Que5: 4,
-              Que6: 4,
-              Que7: 4,
-            }}
-          >
-            <Form.Item
-              name="Gender"
-              label="Gender"
-              //hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: 'Please select your gender!',
-                },
-              ]}
-            >
-              <Radio.Group>
-                <Radio value="Male">Male</Radio>
-                <Radio value="Female">Female</Radio>
-                <Radio value="Other">Other</Radio>
-                <Radio value="Prefer not to say">Prefer not to say</Radio>
-              </Radio.Group>
-            </Form.Item>
-
-            <Form.Item label="Age"
-            // name="age"
+        <div className="MainBody">
+          <div className="MainBodyMiddle">
+            <Form
+              name="validate_other"
+              {...formItemLayout}
+              onFinish={onFinish}
+              initialValues={{
+                Q2: 4,
+                Que1: 4,
+                Que2: 4,
+                Que3: 4,
+                Que4: 4,
+                Que5: 4,
+                Que6: 4,
+                Que7: 4,
+              }}
             >
               <Form.Item
-                name="Age"
+                name="Gender"
+                label="Gender"
+                //hasFeedback
                 rules={[
                   {
                     required: true,
-                    message: 'Please enter your age!',
+                    message: 'Please select your gender!',
                   },
                 ]}
               >
-                <InputNumber min={1} max={150} />
+                <Radio.Group>
+                  <Radio value="Male">Male</Radio>
+                  <Radio value="Female">Female</Radio>
+                  <Radio value="Other">Other</Radio>
+                  <Radio value="Prefer not to say">Prefer not to say</Radio>
+                </Radio.Group>
               </Form.Item>
-            </Form.Item>
 
-            <Form.Item
-              name="Ethnicgroup"
-              label="Ethnic group"
-              //hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: 'Please select Ethnic group!',
-                },
-              ]}
-            >
-              <Select placeholder="Please select Ethnic group" style={{ width: 220 }}>
-                <Option value="European">European</Option>
-                <Option value="M¯aori">M¯aori</Option>
-                <Option value="Pacific People">Pacific People</Option>
-                <Option value="Asian">Asian</Option>
-                <Option value="Middle Eastern">Middle Eastern</Option>
-                <Option value="Latin America">Latin America</Option>
-                <Option value="African">African</Option>
-                <Option value="Other Ethnicity">Other Ethnicity</Option>
-                <Option value="Prefer not to say">Prefer not to say</Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              label="Weight(kg)"
-            >
-              <Form.Item name="Weight">
-                <InputNumber defaultValue="0" min={1} max={200} suffix="RMB" />
-                {/* <span className="ant-form-text"> kg</span> */}
+              <Form.Item label="Age">
+                <Form.Item
+                  name="Age"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please enter your age!',
+                    },
+                  ]}
+                >
+                  <InputNumber min={1} max={150} />
+                </Form.Item>
               </Form.Item>
-            </Form.Item>
-            <Form.Item
-              label="Height(cm)"
-            >
-              <Form.Item name="Height">
-                <InputNumber defaultValue="0" min={1} max={300} />
-                {/* <span className="ant-form-text"> cm</span> */}
+
+              <Form.Item
+                name="Ethnicgroup"
+                label="Ethnic group"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please select Ethnic group!',
+                  },
+                ]}
+              >
+                <Select placeholder="Please select Ethnic group" style={{ width: 220 }}>
+                  <Option value="European">European</Option>
+                  <Option value="M¯aori">M¯aori</Option>
+                  <Option value="Pacific People">Pacific People</Option>
+                  <Option value="Asian">Asian</Option>
+                  <Option value="Middle Eastern">Middle Eastern</Option>
+                  <Option value="Latin America">Latin America</Option>
+                  <Option value="African">African</Option>
+                  <Option value="Other Ethnicity">Other Ethnicity</Option>
+                  <Option value="Prefer not to say">Prefer not to say</Option>
+                </Select>
               </Form.Item>
-            </Form.Item>
 
-            <Form.Item label="Q1">
-              <span className="ant-form-text">How frequently have you practiced in a fire drill?</span>
-            </Form.Item>
-            <Form.Item
-              name="Q1"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please select !',
-                },
-              ]}
-            >
-              <Select placeholder="Please select " style={{ width: 200 }}>
-                <Option value="Never">Never</Option>
-                <Option value="Once a year">Once a year</Option>
-                <Option value="Twice a year">Twice a year</Option>
-                <Option value="More than twice a year">More than twice a year</Option>
-                <Option value="Unsure">Unsure</Option>
-              </Select>
-            </Form.Item>
+              <Form.Item
+                label="Weight(kg)"
+              >
+                <Form.Item name="Weight">
+                  <InputNumber defaultValue="0" min={1} max={200} suffix="RMB" />
+                </Form.Item>
+              </Form.Item>
+              <Form.Item
+                label="Height(cm)"
+              >
+                <Form.Item name="Height">
+                  <InputNumber defaultValue="0" min={1} max={300} />
+                </Form.Item>
+              </Form.Item>
 
-            <Form.Item label="Q2">
-              <span className="ant-form-text">How would you rate your preparedness/awareness of the correct actions required in a fire?
-                (-3= very unprepared and +3= Very prepared)
-                7-point Likert Scale</span>
-            </Form.Item>
-            <Form.Item
-              key={"Q2"}
-              label=""
-              name="Q2"
-            >
-              <Slider
-                marks={{
-                  1: '-3',
-                  2: '-2',
-                  3: '-1',
-                  4: '0',
-                  5: '1',
-                  6: '2',
-                  7: '3',
-                }
-                }
-                max={7}
-                min={1}
-                tipFormatter={false}
-                defaultValue={4}
-                value='4'
-              />
-            </Form.Item>
+              <Form.Item label="Q1">
+                <span className="ant-form-text">How frequently have you practiced in a fire drill?</span>
+              </Form.Item>
+              <Form.Item
+                name="Q1"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please select !',
+                  },
+                ]}
+              >
+                <Select placeholder="Please select " style={{ width: 200 }}>
+                  <Option value="Never">Never</Option>
+                  <Option value="Once a year">Once a year</Option>
+                  <Option value="Twice a year">Twice a year</Option>
+                  <Option value="More than twice a year">More than twice a year</Option>
+                  <Option value="Unsure">Unsure</Option>
+                </Select>
+              </Form.Item>
 
-            <Form.Item label="Q3:">
-              <span className="ant-form-text">How often do you play video games?</span>
-            </Form.Item>
-            <Form.Item
-              name="Q3"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please select',
-                },
-              ]}
-            >
-              <Select placeholder="Please select" style={{ width: 200 }}>
-                <Option value="Never">Never</Option>
-                <Option value="Less than once a year">Less than once a year</Option>
-                <Option value="At least once a year">At least once a year</Option>
-                <Option value="At least once a month">At least once a month</Option>
-                <Option value="At least once a week">At least once a week</Option>
-                <Option value="Several days a week">Several days a week</Option>
-                <Option value="Everyday">Everyday</Option>
-              </Select>
-            </Form.Item>
+              <Form.Item label="Q2">
+                <span className="ant-form-text">How would you rate your preparedness/awareness of the correct actions required in a fire?
+                  (-3= very unprepared and +3= Very prepared)
+                  7-point Likert Scale</span>
+              </Form.Item>
+              <Form.Item
+                key={"Q2"}
+                label=""
+                name="Q2"
+              >
+                <Slider
+                  marks={{
+                    1: '-3',
+                    2: '-2',
+                    3: '-1',
+                    4: '0',
+                    5: '1',
+                    6: '2',
+                    7: '3',
+                  }
+                  }
+                  max={7}
+                  min={1}
+                  tipFormatter={false}
+                  defaultValue={4}
+                  value='4'
+                />
+              </Form.Item>
 
-            <Form.Item label="Q4:">
-              <span className="ant-form-text">Have you ever used Virtual Reality?</span>
-            </Form.Item>
-            <Form.Item
-              name="Q4"
-              //hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: 'Please select',
-                },
-              ]}
-            >
-              {/* <span className="ant-form-text">Have you ever used Virtual Reality?</span>
-              <br></br> */}
-              <Radio.Group>
-                <Radio value="Yes">Yes</Radio>
-                <Radio value="No">No</Radio>
-                <Radio value="Unsure">Unsure</Radio>
-              </Radio.Group>
-            </Form.Item>
-            <Form.Item label="Q5: ">
-              <span className="ant-form-text">Please state your level of agreement with these statements. (7-point Likert Scale : -3=
-                strongly disagree and +3= strongly agree).</span>
-            </Form.Item>
-            {listItem}
-            {
+              <Form.Item label="Q3:">
+                <span className="ant-form-text">How often do you play video games?</span>
+              </Form.Item>
+              <Form.Item
+                name="Q3"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please select',
+                  },
+                ]}
+              >
+                <Select placeholder="Please select" style={{ width: 200 }}>
+                  <Option value="Never">Never</Option>
+                  <Option value="Less than once a year">Less than once a year</Option>
+                  <Option value="At least once a year">At least once a year</Option>
+                  <Option value="At least once a month">At least once a month</Option>
+                  <Option value="At least once a week">At least once a week</Option>
+                  <Option value="Several days a week">Several days a week</Option>
+                  <Option value="Everyday">Everyday</Option>
+                </Select>
+              </Form.Item>
 
-            }
-            <div className="MainBodyBottom">
-              <Button type="primary" htmlType="submit" block>Submit</Button>
-            </div>
-          </Form>
+              <Form.Item label="Q4:">
+                <span className="ant-form-text">Have you ever used Virtual Reality?</span>
+              </Form.Item>
+              <Form.Item
+                name="Q4"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please select',
+                  },
+                ]}
+              >
+                <Radio.Group>
+                  <Radio value="Yes">Yes</Radio>
+                  <Radio value="No">No</Radio>
+                  <Radio value="Unsure">Unsure</Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item label="Q5: ">
+                <span className="ant-form-text">Please state your level of agreement with these statements. (7-point Likert Scale : -3=
+                  strongly disagree and +3= strongly agree).</span>
+              </Form.Item>
+              {listItem}
+              <div className="MainBodyBottom">
+                <Button type="primary" htmlType="submit" block>Submit</Button>
+              </div>
+            </Form>
+          </div>
         </div>
-      </div>
-      <div>
-        <br></br>
-      </div>
+        <div>
+          <br></br>
+        </div>
+      </Spin>
     </div>
   )
 }

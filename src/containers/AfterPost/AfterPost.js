@@ -1,18 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { postSubmit } from '../../Api'
-import {useHistory} from 'react-router-dom';
+import { useHistory,useLocation } from 'react-router-dom';
 import {
   Form,
-  Select,
   Input,
   Slider,
   Button,
+  message,
+  Spin
 } from 'antd';
 import './AfterPost.scss';
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 function AfterPost() {
-  //const { Option } = Select;
+  const [loading, setLoding] = useState(false)
+  let query = useQuery().get("userID");
   const history = useHistory();
+  let userID = "";
   const formItemLayout = {
     labelCol: {
       span: 0,
@@ -85,22 +92,39 @@ function AfterPost() {
     { id: 18, text: 'I believed that the fire was harmful' },
   ]
 
+  useEffect(() => {
+    if (query !== null) {
+      userID = query
+    }
+    else {
+      //console.log("No user ID")
+      history.replace("/ErrorPage");
+    }
+  }, [])
+
   const onFinish = (values) => {
-    //console.log(values);
-    postSubmit(values)
-        .then((res) => {
-          if (res.status === 235) {
-            console.log(res.data)
-          } else if (res.status === -100) {
-            console.log(res.data)
-            // this.props.history.replace({
-            //   pathname: 'login'
-            // })
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    setLoding(true);
+    if (userID !== "") {
+      let sendValue = {
+        "userId": userID,
+        "receivedPostSurvey": values
+      }
+    
+    console.log(sendValue);
+    postSubmit(sendValue)
+      .then((res) => {
+        var redData = res.data;
+        if (redData.status === 235) {
+          history.replace("/PreComplete");
+        } else if (res.status === -100) {
+          message.error('Submit failed, please try again later');
+          console.log(redData)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
   };
 
   const listItem = [];
@@ -113,7 +137,6 @@ function AfterPost() {
       key={'Que' + item.id}
       name={'Que' + item.id}
     >
-      {/* <Form.item > */}
       <Slider
         marks={innerMark}
         max={7}
@@ -121,7 +144,6 @@ function AfterPost() {
         tipFormatter={false}
         defaultValue={4}
       />
-      {/* </Form.item> */}
     </Form.Item>;
     listItem.push(formItem);
     return null;
@@ -135,13 +157,10 @@ function AfterPost() {
     openItem.push(formItemBegin);
     let formItem = <Form.Item
       key={'Open' + item.id}
-      //name={'Open' + item.id}
     >
-      {/* <Form.item > */}
       <Form.Item name={'Open' + item.id}>
         <Input.TextArea />
       </Form.Item>
-      {/* </Form.item> */}
     </Form.Item>;
     openItem.push(formItem);
     return null;
@@ -149,6 +168,7 @@ function AfterPost() {
 
   return (
     <div className="Outline">
+      <Spin spinning={loading}>
       <div className="BodyTop">
         <div className="bodyText">
           <h1>Post-experiment survey</h1>
@@ -173,6 +193,7 @@ function AfterPost() {
       <div>
         <br></br>
       </div>
+      </Spin>
     </div>
   )
 }
