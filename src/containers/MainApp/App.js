@@ -54,7 +54,6 @@ function App() {
 
   const onFinish = (values) => {
     setLoding(true);
-
     if (userID !== "") {
       let sendValue = {
         "userId": userID,
@@ -133,25 +132,24 @@ function App() {
                 Que7: 4,
               }}
             >
-              <Form.Item
-                name="Gender"
-                label="Gender"
-                //hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please select your gender!',
-                  },
-                ]}
-              >
-                <Radio.Group>
-                  <Radio value="Male">Male</Radio>
-                  <Radio value="Female">Female</Radio>
-                  <Radio value="Other">Other</Radio>
-                  <Radio value="Prefer not to say">Prefer not to say</Radio>
-                </Radio.Group>
+              <Form.Item label="Gender">
+                <Form.Item
+                  name="Gender"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please select your gender!',
+                    },
+                  ]}
+                >
+                  <Radio.Group>
+                    <Radio value="Male">Male</Radio>
+                    <Radio value="Female">Female</Radio>
+                    <Radio value="Other">Other</Radio>
+                    <Radio value="Prefer not to say">Prefer not to say</Radio>
+                  </Radio.Group>
+                </Form.Item>
               </Form.Item>
-
               <Form.Item label="Age">
                 <Form.Item
                   name="Age"
@@ -166,29 +164,29 @@ function App() {
                 </Form.Item>
               </Form.Item>
 
-              <Form.Item
-                name="Ethnicgroup"
-                label="Ethnic group"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please select Ethnic group!',
-                  },
-                ]}
-              >
-                <Select placeholder="Please select Ethnic group" style={{ width: 220 }}>
-                  <Option value="European">European</Option>
-                  <Option value="M¯aori">M¯aori</Option>
-                  <Option value="Pacific People">Pacific People</Option>
-                  <Option value="Asian">Asian</Option>
-                  <Option value="Middle Eastern">Middle Eastern</Option>
-                  <Option value="Latin America">Latin America</Option>
-                  <Option value="African">African</Option>
-                  <Option value="Other Ethnicity">Other Ethnicity</Option>
-                  <Option value="Prefer not to say">Prefer not to say</Option>
-                </Select>
+              <Form.Item label="Ethnic group">
+                <Form.Item
+                  name="Ethnicgroup"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please select Ethnic group!',
+                    },
+                  ]}
+                >
+                  <Select placeholder="Please select Ethnic group" style={{ width: 220 }}>
+                    <Option value="European">European</Option>
+                    <Option value="Māori">Māori</Option>
+                    <Option value="Pacific People">Pacific People</Option>
+                    <Option value="Asian">Asian</Option>
+                    <Option value="Middle Eastern">Middle Eastern</Option>
+                    <Option value="Latin America">Latin America</Option>
+                    <Option value="African">African</Option>
+                    <Option value="Other Ethnicity">Other Ethnicity</Option>
+                    <Option value="Prefer not to say">Prefer not to say</Option>
+                  </Select>
+                </Form.Item>
               </Form.Item>
-
               <Form.Item
                 label="Weight(kg)"
               >
@@ -212,7 +210,7 @@ function App() {
                 rules={[
                   {
                     required: true,
-                    message: 'Please select !',
+                    message: 'Please select an option!',
                   },
                 ]}
               >
@@ -262,7 +260,7 @@ function App() {
                 rules={[
                   {
                     required: true,
-                    message: 'Please select',
+                    message: 'Please select an option!',
                   },
                 ]}
               >
@@ -285,7 +283,7 @@ function App() {
                 rules={[
                   {
                     required: true,
-                    message: 'Please select',
+                    message: 'Please select an option!',
                   },
                 ]}
               >
