@@ -97,7 +97,6 @@ function AfterPost() {
       userID = query
     }
     else {
-      //console.log("No user ID")
       history.replace("/ErrorPage");
     }
   }, [])
@@ -110,7 +109,6 @@ function AfterPost() {
         "receivedPostSurvey": values
       }
     
-    console.log(sendValue);
     postSubmit(sendValue)
       .then((res) => {
         var redData = res.data;
