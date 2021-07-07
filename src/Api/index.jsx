@@ -13,3 +13,9 @@ export const postSubmit = (values) => {
     console.log(values);
     return axios.post(baseurl+`api/afterSurvey`, values)
 }
+
+export const userLogin = (values) => {
+    //debugger
+    console.log(values);
+    return axios.post(baseurl+`/login`, values)
+}

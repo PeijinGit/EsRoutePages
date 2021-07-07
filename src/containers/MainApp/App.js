@@ -298,6 +298,7 @@ function App() {
                   strongly disagree and +3= strongly agree).</span>
               </Form.Item>
               {listItem}
+              <span>Please ensure that you have completed the questionnaire, otherwise it cannot be submitted.</span>
               <div className="MainBodyBottom">
                 <Button type="primary" htmlType="submit" block>Submit</Button>
               </div>

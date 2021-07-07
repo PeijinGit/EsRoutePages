@@ -1,0 +1,23 @@
+.Outline {
+    margin: 0 auto;
+    //background-color: rgb(40, 136, 53);
+    width: 500px;
+    height: 300px;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    //background: aqua;
+    border-radius: 10px;
+    border: 2px solid darkslategray;
+    .loginforminside{
+        width: 300px;
+        height: 200px;
+        margin-top: 150px;
+        position: absolute;
+        left: 46%;
+        transform: translate(-50%,-50%);
+        //background-color: rgb(30, 160, 62);
+    }
+}

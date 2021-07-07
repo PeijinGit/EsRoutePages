@@ -1,5 +1,5 @@
 import React from 'react'
-import { Result, Button } from 'antd';
+import { Result } from 'antd';
 
 export default function Complete() {
     return (
@@ -7,12 +7,6 @@ export default function Complete() {
             status="success"
             title="Successfully Submitted!"
             subTitle="Please close this window"
-            // extra={[
-            //     <Button type="primary" key="console">
-            //         Go Console
-            //     </Button>,
-            //     <Button key="buy">Buy Again</Button>,
-            // ]}
         />
     )
 }
