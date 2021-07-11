@@ -6,7 +6,8 @@ import AfterPos from './containers/AfterPost/AfterPost';
 import PreComplete from './containers/Finish/PreComplete';
 import ErrorPage from './containers/ErrorPage/ErrorPage';
 import Login from './containers/Login/login';
-import Extract from './containers/Extract/extract';
+//import Extract from './containers/Extract/extract';
+import Extract from './containers/Extract2/extract';
 
 export default function IRouter() {
     return (
@@ -18,6 +19,7 @@ export default function IRouter() {
                 <Route path="/ErrorPage" component={ErrorPage} />
                 <Route path="/Login" component={Login} />
                 <Route path="/Extract" component={Extract} />
+                {/* <Route exact path="/Extract2"  component={Extract2} /> */}
                 <Route path="/Error" component={ErrorPage} />
                 <Redirect to='/Error' component={ErrorPage}/>
             </Switch>

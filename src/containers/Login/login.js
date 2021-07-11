@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, Link } from 'react-router-dom';
 import { Form, Input, Button, Checkbox, message, Spin } from 'antd';
-import { postSubmit } from '../../Api'
+import { userLogin } from '../../Api'
 import './login.scss';
 
 export default function Login() {
@@ -10,25 +10,46 @@ export default function Login() {
     const history = useHistory();
     const onFinish = (values) => {
         setLoding(true);
-        if (userId !== "") {
-            let sendValue = {
-                "user": values
-            }
+        // history.replace({
+        //     pathname: '/Extract2',
+        //     state: { userType: 'Admin' }
+        // });
+        //console.log(values)
 
-            postSubmit(sendValue)
-                .then((res) => {
-                    var redData = res.data;
-                    if (redData.status === 235) {
-                        history.replace("/PreComplete");
-                    } else if (res.status === -100) {
-                        message.error('Submit failed, please try again later');
-                        console.log(redData)
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+        let sendValue = {
+            "username": values.username,
+            "password": values.password
         }
+        //console.log(sendValue)
+        userLogin(sendValue)
+            .then((res) => {
+                var redData = res.data;
+                console.log(redData)
+                if (redData.status == 200) {
+                    var { userInfo } = redData
+                    history.replace({
+                        pathname: '/Extract',
+                        state: {
+                            username: userInfo.userId,
+                            userType: userInfo.type,
+                            token: userInfo.token
+                        }
+                    });
+                }
+                else {
+                    message.error('Wrong Username or Password');
+                }
+                // if (redData.status === 235) {
+                //     history.replace("/PreComplete");
+                // } else if (res.status === -100) {
+                //     message.error('Submit failed, please try again later');
+                //     console.log(redData)
+                // }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
     };
 
     const onFinishFailed = (errorInfo) => {

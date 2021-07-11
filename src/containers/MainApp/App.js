@@ -66,7 +66,7 @@ function App() {
             history.replace("/PreComplete");
           } else if (res.status === -100) {
             message.error('Submit failed, please try again later');
-            console.log(redData)
+            //console.log(redData)
           }
         })
         .catch(function (error) {
