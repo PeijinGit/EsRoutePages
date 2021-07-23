@@ -4,6 +4,7 @@ import { Button, Typography } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { fileSizeAcquire,coorDownload,preSurveyDownload,afterSurveyDownload } from '../../Api'
 import './extract.scss'
+import { baseurl } from "../../Config";
 
 const { Text } = Typography;
 export default function Extract() {
@@ -32,34 +33,25 @@ export default function Extract() {
 
 
     const recordAc = () => {
-        coorDownload().then((res)=> {
-            var redData = res.data;
-            console.log(redData);
-        })
+        
+            const url = baseurl+'/File/CoordinateAcquire'
+            window.location.href = url
+            //window.open(url)
+       
     }
 
     const preSurveyAc = () => {
-        preSurveyDownload().then((res)=> {
-            var redData = res.data;
-            let {preSurvey,afterSurvey,recording} = redData;
-            setPreSize(preSurvey);
-            setAfterSize(afterSurvey);
-            setRecSize(recording);
-        })
+        const url = baseurl+'/File/PreSurveyAcquire'
+            window.location.href = url
     }
 
     const afterSurveyAc = () => {
-        afterSurveyDownload().then((res)=> {
-            var redData = res.data;
-            let {preSurvey,afterSurvey,recording} = redData;
-            setPreSize(preSurvey);
-            setAfterSize(afterSurvey);
-            setRecSize(recording);
-        })
+        const url = baseurl+'/File/AfterSurveyAcquire'
+            window.location.href = url
     }
     return (
         <div className="backgroudMain">
-            <div className="outline">
+            <div className="outlineEx">
                 <div className="MainBody">
                     <div className="MainBodyInner">
                         <Button

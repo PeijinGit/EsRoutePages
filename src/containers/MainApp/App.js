@@ -75,6 +75,10 @@ function App() {
     }
   };
 
+  const onFinishFailed = () =>{
+    message.warning("Make sure the form is completed");
+  }
+
   const listItem = [];
   qList.map((item) => {
     let formItemBegin = <Form.Item label={item.id}>
@@ -108,7 +112,7 @@ function App() {
 
 
   return (
-    <div className="Outline">
+    <div className="outlinePre">
       <Spin spinning={loading}>
         <div className="BodyTop">
           <div className="bodyText">
@@ -121,6 +125,7 @@ function App() {
               name="validate_other"
               {...formItemLayout}
               onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
               initialValues={{
                 Q2: 4,
                 Que1: 4,

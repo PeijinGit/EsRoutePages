@@ -125,6 +125,10 @@ function AfterPost() {
     }
   };
 
+  const onFinishFailed = () =>{
+    message.warning("Make sure the form is completed");
+  }
+
   const listItem = [];
   qList.map((item) => {
     let formItemBegin = <Form.Item label={item.id}>
@@ -165,7 +169,7 @@ function AfterPost() {
   })
 
   return (
-    <div className="Outline">
+    <div className="outlinePost">
       <Spin spinning={loading}>
       <div className="BodyTop">
         <div className="bodyText">
@@ -178,6 +182,7 @@ function AfterPost() {
             name="validate_other"
             {...formItemLayout}
             onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
             initialValues={initvalues}
           >
             {openItem}
